@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.8.2",
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "node": "^19.8.1"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^2.0.2",
+    "ethers": "5.4",
+    "hardhat": "^2.13.0",
+    "hardhat-gas-reporter": "^1.0.9"
+  }
+}
