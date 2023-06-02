@@ -20,24 +20,14 @@ describe('the multisig wallet test',()=> {
     it("owner should be greated than zero",async()=> {
         const owners = await token.getOwners();
         await expect(owners.length).gt(0);
-         //expect(await token.getOwners()).to.have.length.of.at.least(0);
+         
     })
     it("numconfirmations should be less than or equal to owners",async()=> {
         const owners = await token.getOwners();
         const NumsC = await token.GetNumconfirmationrequired();
         await expect(NumsC).lessThanOrEqual(owners.length);
     })
-    // it("smart contract should not be owner",async()=> {
-    //     const owners = await token.getOwners();
-    //      const addresszero = owners.filter(own=> {
-    //         if(own.address == token.address(0)){
-    //             return true;
-    //         }
-    //         else { false;}
-    //      }) 
-    //      console.log(addresszero);
-    //      expect((addresszero.address).equal(token.address(0))).to.be.reverted;
-    // })
+   
     it("owners should be unique",async()=> {
         const owners = await token.getOwners();
         
@@ -56,9 +46,8 @@ describe('the multisig wallet test',()=> {
      } )
      it(" only owner can submit transaction",async()=> {
         const toBytes = (string)=> Array.from(Buffer.from(string,'utf8'));
-        //const BeforeSubmit = await token.getTransactionCount();
         await expect( token.submitTransaction(accounts[4].address,amount,toBytes("hi"))).to.be.reverted;
-        //const AfterSubmit = await token.getTransactionCount();
+        
         
      })
      it("testing submit transaction",async()=> {
