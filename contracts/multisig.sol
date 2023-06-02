@@ -15,7 +15,7 @@ contract MultiSigWallet{
     event ExecuteTransaction(address indexed owner,uint indexed txIndex);
 
     address[] public owners;
-    mapping(address=>bool) public isOwner;
+    mapping(address=>bool) public isOwner; //is owner or not?
     uint  numConfirmationsRequired;
 
     struct Transaction{
@@ -26,9 +26,9 @@ contract MultiSigWallet{
         uint numConfirmations;
     }
 
-    mapping(uint=>mapping(address=>bool)) public isConfirmed;
+    mapping(uint=>mapping(address=>bool)) public isConfirmed; // tx is confirmed by each owner or not
 
-    Transaction[] public transactions;
+    Transaction[] public transactions; 
 
     modifier onlyOwner(){
         require(isOwner[msg.sender],"Not the owner");
@@ -54,7 +54,7 @@ contract MultiSigWallet{
         require(_owners.length>0,"at least one owner required");
         require(_numConfirmationsRequired>0 && _numConfirmationsRequired<=_owners.length,
         "invalid number of required confirmations in constructor");
-        for(uint i=0;i<_owners.length;i++){
+        for(uint i=0;i<_owners.length;i++){ // iterating owners one by one
             address owner=_owners[i];
             require(owner!=address(0),"Invalid owner");
             require(!isOwner[owner],"owner not unique");
@@ -100,7 +100,7 @@ contract MultiSigWallet{
         require(success,"invalid");
         emit Deposit(msg.sender,msg.value,address(this).balance);
     } 
-     receive() payable external{}
+     receive() payable external{} // used to receive eth by smartcontract
        function executeTransaction(uint256 _txIndex)
         public
         onlyOwner
