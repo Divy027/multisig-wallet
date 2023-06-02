@@ -5,7 +5,7 @@ const {ethers} = require('hardhat');
 describe('the multisig wallet test',()=> {
     let accounts,token,wallet;
     const amount= ethers.utils.parseEther("10");
-    const toBytes = (string)=> Array.from(Buffer.from(string,'utf8'));
+    const toBytes = (string)=> Array.from(Buffer.from(string,'utf8'));  //convert string to bytes
 
     before(async()=> {
         let contract = await ethers.getContractFactory("MultiSigWallet");
@@ -45,9 +45,7 @@ describe('the multisig wallet test',()=> {
        
      } )
      it(" only owner can submit transaction",async()=> {
-        const toBytes = (string)=> Array.from(Buffer.from(string,'utf8'));
-        await expect( token.submitTransaction(accounts[4].address,amount,toBytes("hi"))).to.be.reverted;
-        
+         await expect( token.submitTransaction(accounts[4].address,amount,toBytes("hi"))).to.be.reverted;
         
      })
      it("testing submit transaction",async()=> {
@@ -58,19 +56,18 @@ describe('the multisig wallet test',()=> {
      })
 
      it("testing confirm transcation",async()=> {
-        const toBytes = (string)=> Array.from(Buffer.from(string,'utf8'));
         const Txcount =  await token.getTransactionCount();
         const Transaction = await token.getTransaction(Txcount-1);
         const BeforeConfirm = Transaction.numConfirmations;
         const wallet2 = await token.connect(accounts[2]);
         await wallet2.confirmTransaction(Txcount-1);
-        const ConfirmTransaction = await token.getTransaction(Txcount-1)
+        const ConfirmTransaction = await token.getTransaction(Txcount-1);
         const AfterConfirm = ConfirmTransaction.numConfirmations;
         expect(AfterConfirm).to.equal(BeforeConfirm.add(1));
      })
 
      it("testing deposit function",async()=> {
-        const beforeDeposit = (await wallet.GetsmartcontractBalance())/10**18;
+        const beforeDeposit = (await wallet.GetsmartcontractBalance())/10**18; //converting wei to eth
         const option = {value:amount};
         await wallet.DepositETH({value: amount});
         const AfterDeposit = (await wallet.GetsmartcontractBalance())/10**18;
